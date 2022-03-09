@@ -27,7 +27,7 @@ pipeline {
         sh "docker rmi $imagename:latest"
         sh "docker rmi caddy:builder-alpine"
         sh "docker rmi caddy:latest"
-        sh "docker rmi $(docker images -f dangling=true -q)"
+        sh "docker rmi \$(docker images -f dangling=true -q)"
       }
     }
   }
