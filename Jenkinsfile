@@ -3,6 +3,7 @@ pipeline {
     imagename = "jbhome/caddy-authelia"
     registryCredential = 'hub.docker.com'
     dockerImage = ''
+    caddyVersion = ''
   }
   agent any
   stages {
@@ -15,9 +16,11 @@ pipeline {
     }
     stage('Deploy Image') {
       steps{
+        sh "caddyVersion=$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=")')"
         script {
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push('latest')
+            dockerImage.push($caddyVersion)
           }
         }
       }
