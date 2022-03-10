@@ -17,7 +17,7 @@ pipeline {
     stage('Deploy Image') {
       steps{
         //sh "caddyVersion=\$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')"
-        caddyVersion = sh( returnStdout: true, "echo \$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')" )
+        caddyVersion = sh( returnStdout: true, 'echo \$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')' )
         //sh "curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\'"
         sh "docker tag $imagename $imagename:latest"
         sh "docker tag $imagename $imagename:Caddy-$caddyVersion"
