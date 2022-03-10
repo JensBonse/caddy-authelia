@@ -17,10 +17,12 @@ pipeline {
     stage('Deploy Image') {
       steps{
         sh "caddyVersion=\$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')"
+        sh "docker tag $imagename $imagename:latest"
+        sh "docker tag $imagename $imagename:Caddy-$caddyVersion"
         script {
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push('latest')
-            dockerImage.push($caddyVersion)
+            dockerImage.push('Caddy-$caddyVersion')
           }
         }
       }
