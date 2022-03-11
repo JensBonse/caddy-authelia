@@ -24,7 +24,7 @@ pipeline {
         script {
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push('latest')
-            dockerImage.push('$CADDY_VERSION')
+            dockerImage.push('Caddy-'$CADDY_VERSION)
           }
         }
       }
