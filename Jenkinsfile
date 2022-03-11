@@ -18,7 +18,7 @@ pipeline {
       steps{
         //sh "caddyVersion=\$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')"
         sh "echo \$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')"
-        env.caddyVersion=sh([ script: "echo \$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')", returnStdout: true ]).trim()
+        env.caddyVersion=sh( script: "echo \$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')", returnStdout: true ).trim()
         // sh "\$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\') > env.caddyVersion"
         //sh "curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\'"
         sh "docker tag $imagename $imagename:latest"
