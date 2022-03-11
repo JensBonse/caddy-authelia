@@ -16,15 +16,15 @@ pipeline {
     stage('Deploy Image') {
       steps{
         sh "echo \$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')"
-        sh 'chmod +x ./get-version.sh'
+        sh "chmod +x ./get-version.sh"
         sh "./get-version.sh"	// Get caddy version and store in version.properties
-        load './version.properties'
+        load "./version.properties"
         sh "docker tag $imagename $imagename:latest"
-        sh "docker tag $imagename $imagename:Caddy-$CADDY_VERSION"
+        sh "docker tag $imagename $imagename:$CADDY_VERSION"
         script {
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push('latest')
-            dockerImage.push('Caddy-$CADDY_VERSION')
+            dockerImage.push('$CADDY_VERSION')
           }
         }
       }
