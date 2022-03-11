@@ -15,7 +15,6 @@ pipeline {
     }
     stage('Deploy Image') {
       steps{
-        sh "echo \$(curl --silent \"https://api.github.com/repos/caddyserver/caddy/releases/latest\" | grep -Po \'\"tag_name\": \"\\K.*?(?=\")\')"
         sh "chmod +x ./get-version.sh"
         sh "./get-version.sh"	// Get caddy version and store in version.properties
         load "./version.properties"
@@ -24,7 +23,6 @@ pipeline {
         script {
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push('latest')
-            dockerImage.push('Caddy-'$CADDY_VERSION)
           }
         }
       }
