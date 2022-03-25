@@ -18,8 +18,7 @@ pipeline {
     }
     stage('Deploy Image') {
       steps{
-        sh "docker tag $imagename $imagename:latest"
-        sh "docker tag $imagename $imagename:$CADDY_VERSION"
+        sh "docker tag $imagename:$CADDY_VERSION $imagename:latest"
         script {
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push()
