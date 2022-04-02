@@ -12,18 +12,20 @@ pipeline {
         sh "./get-version.sh"	// Get caddy version and store in version.properties
         load "./version.properties"
         script {
-          dockerImage = docker.build imagename + ":$CADDY_VERSION"
+          dockerImage = docker.build("$imagename", "--no-cache .")
         }
       }
     }
     stage('Deploy Image') {
       steps{
-        sh "docker tag $imagename:$CADDY_VERSION $imagename:latest"
         script {
           docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+            dockerImage.push("$CADDY_VERSION")
+            dockerImage.push("latest")
           }
         }
+        sh "docker tag $imagename $imagename:latest"
+        sh "docker tag $imagename $imagename:$CADDY_VERSION"
       }
     }
     stage('Remove Unused docker image') {
